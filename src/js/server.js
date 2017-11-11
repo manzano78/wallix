@@ -1,8 +1,15 @@
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const sqlite3 = require('sqlite3').verbose();
+const db = new sqlite3.Database('./database.db');
 
 const server = express();
+
+const datasetScript = fs.readFileSync('./dataset.sql', 'utf-8');
+const datasetStatements = datasetScript.split(/\s*;\s*/g);
+
+db.serialize(() => datasetStatements.forEach(statement => statement && db.run(statement)));
 
 server.use('/public', express.static(__dirname + '/../../public'));
 
@@ -32,16 +39,22 @@ server.get('/api/sql/query/:fileName', (req, res) => {
         if(err)
             throw err;
 
-        fs.readFile(filePath, 'utf-8', (err, selectQuery) => {
+        fs.readFile(filePath, 'utf-8', (err, selectStatement) => {
 
             if(err)
                 throw err;
 
-            res.json([{
-                nom: 'Anzano',
-                prenom: 'Mikaël',
-                civilite: 'Mr'
-            }]);
+            console.log(selectStatement)
+
+            db.all(selectStatement, [], (err, rows) => {
+
+                if(err)
+                    throw err;
+
+                console.log(rows);
+
+                res.json(rows);
+            });
         });
     });
 });

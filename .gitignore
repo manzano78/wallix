@@ -1,5 +1,6 @@
 .idea
 wallix.iml
 npm-debug.log
+database.db
 public
 node_modules
