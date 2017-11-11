@@ -29,11 +29,8 @@ export default class HttpStore extends BaseStore {
 
         const finalUrl = params ? `${url}?${stringify(params)}` : url;
 
-        const data = await fetch(finalUrl, HttpStore.FETCH_CONFIG)
-            .then(response => response.json());
-
-        runInAction(() => this.pendingRequestCount--);
-
-        return data;
+        return await fetch(finalUrl, HttpStore.FETCH_CONFIG)
+            .then(response => response.json())
+            .finally(() => runInAction(() => this.pendingRequestCount--));
     }
 }

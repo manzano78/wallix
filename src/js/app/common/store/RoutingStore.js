@@ -1,8 +1,7 @@
 import {computed, observable, reaction, runInAction, action} from 'mobx'
 import {createLocation, createPath, locationsAreEqual} from 'history'
 import Route from 'route-parser'
-import {isString, isFunction} from 'is-check'
-import classNames from 'classnames'
+import {isFunction} from 'is-check'
 import {getRoutesDefinition, onNoRouteFound} from '../routes'
 import BaseStore from './BaseStore'
 import getArgNames from 'fn-args'
@@ -23,17 +22,6 @@ export default class RoutingStore extends BaseStore {
         this.currentView = null;
         this.currentLocation = null;
         this.routerIsStarted = false;
-
-        this.routes = getRoutesDefinition().map(routeDefinition => {
-
-            const {pathPattern} = routeDefinition;
-            const route = new Route(pathPattern);
-
-            return {
-                ...routeDefinition,
-                getMatch: (path) => route.match(path)
-            };
-        })
     }
 
     @computed get currentPath() {
@@ -60,6 +48,19 @@ export default class RoutingStore extends BaseStore {
     @action startRouter() {
 
         if (!this.routerIsStarted) {
+
+            const routesDefinition = getRoutesDefinition(this.rootStore);
+
+            this.routes = routesDefinition.map(routeDefinition => {
+
+                const {pathPattern} = routeDefinition;
+                const route = new Route(pathPattern);
+
+                return {
+                    ...routeDefinition,
+                    getMatch: (path) => route.match(path)
+                };
+            });
 
             this.currentLocation = this.history.location;
 
@@ -100,7 +101,7 @@ export default class RoutingStore extends BaseStore {
         if (redirectionPath) {
             this.history.replace(redirectionPath);
         } else {
-            this.currentView = {component, status: RoutingStore.IS_INITIALIZED};
+            this.currentView = {component, match: {}, status: RoutingStore.IS_INITIALIZED};
         }
     }
 
@@ -113,20 +114,20 @@ export default class RoutingStore extends BaseStore {
 
         if (resultsContainOneOrMorePromises) {
 
-            this.currentView = {component, getTitle, status: RoutingStore.IS_INITIALIZING};
+            this.currentView = {component, match, getTitle, status: RoutingStore.IS_INITIALIZING};
 
             let hasErrors = false;
             const originalView = this.currentView;
 
             await Promise.all(results).catch((error) => {
-                console.log(error);
+                console.error(error);
                 hasErrors = true;
             });
 
             runInAction(() => originalView.status = hasErrors ? RoutingStore.IS_IN_ERROR : RoutingStore.IS_INITIALIZED);
 
         } else {
-            this.currentView = {component, getTitle, status: RoutingStore.IS_INITIALIZED};
+            this.currentView = {component, match, getTitle, status: RoutingStore.IS_INITIALIZED};
         }
     }
 
@@ -145,50 +146,12 @@ export default class RoutingStore extends BaseStore {
         }
     }
 
-    bindLink({to, onClick, ...linkProps}) {
-
-        const {target} = linkProps;
-        const location = isString(to) ? this.createLocation(to) : to;
-
-        return {
-            ...linkProps,
-            href: this.history.createHref(location),
-            onClick: (e) => {
-
-                if (onClick)
-                    onClick(e);
-
-                if (!e.defaultPrevented && e.button === 0 && !target && !RoutingStore._isModifiedEvent(e)) {
-
-                    e.preventDefault();
-                    this.history.push(location);
-                }
-            }
-        }
-    }
-
-    bindNavLink({
-                    to,
-                    target,
-                    onClick,
-                    className: baseClassName = '',
-                    activeClassName = 'active',
-                    isActive: getIsActive,
-                    style: baseStyle = {},
-                    activeStyle = {},
-                    ...linkProps
-                }) {
-
-        const location = isString(to) ? this.createLocation(to) : to;
-        const isActive = getIsActive ? getIsActive() : this.currentLocation && locationsAreEqual(location, this.currentLocation);
-        const className = classNames(baseClassName, {[activeClassName]: isActive});
-        const style = isActive ? {...baseStyle, ...activeStyle} : baseStyle;
-
-        return {...linkProps, ...this.bindLink({target, onClick, to: location}), className, style};
-    }
-
     createLocation(path, state, key) {
         return createLocation(path, state, key, this.currentLocation);
+    }
+
+    currentLocationEquals(location){
+        return this.currentLocation && locationsAreEqual(location, this.currentLocation);
     }
 
     static _executeFunctions(functionsToExecute, match) {

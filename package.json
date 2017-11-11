@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build:dev": "webpack-dev-server --env.build=dev --profile --colors --hot",
+    "start": "node src/js/server.js",
+    "build:dev": "webpack-dev-server --env.build=dev --profile --colors --hot --port 8081",
     "build:prod": "webpack --env.build=prod --profile --colors",
     "test": "jest"
   },
@@ -14,8 +15,10 @@
     "bootstrap": "^3.3.7",
     "classnames": "^2.2.5",
     "es6-promise": "^4.1.0",
+    "express": "^4.16.2",
     "fn-args": "^3.0.0",
     "font-awesome": "^4.7.0",
+    "fs": "0.0.1-security",
     "history": "^4.7.2",
     "is-check": "^1.0.2",
     "isomorphic-fetch": "^2.2.1",
@@ -25,6 +28,7 @@
     "query-string": "^4.3.4",
     "react": "^16.0.0",
     "react-aux": "^1.0.1",
+    "react-bootstrap": "^0.31.3",
     "react-dom": "^16.0.0",
     "react-loading-bar": "^0.0.6",
     "route-parser": "0.0.5",

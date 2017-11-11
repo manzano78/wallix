@@ -1,12 +1,12 @@
-import NamedQueryListView from '../sql/list/NamedQueryListView'
-import NamedQueryResultsView from '../sql/NamedQueryResultsView'
+import FileNameListView from '../sql/list/FileNameListView'
+import QueryResultsView from '../sql/query/QueryResultsView'
 
 export function getRoutesDefinition(rootStore) {
 
     const {
         translationStore,
-        namedQueryResultsStore,
-        namedQueryListStore
+        queryResultsStore,
+        fileNameListStore
     } = rootStore;
 
     const {getText} = translationStore;
@@ -14,21 +14,21 @@ export function getRoutesDefinition(rootStore) {
     return [
         {
             pathPattern: '/sql',
-            component: NamedQueryListView,
-            getTitle: () => getText('app.sql.queries.title'),
-            onMatch: () => namedQueryListStore.fetchNamedQueries()
+            component: FileNameListView,
+            getTitle: () => getText('app.sql.list.title'),
+            onMatch: () => fileNameListStore.fetchFileNameList()
         },
         {
-            pathPattern: '/sql/:namedQuery',
-            component: NamedQueryResultsView,
-            getTitle: () => getText('app.sql.results.title'),
-            onMatch: (namedQuery) => namedQueryResultsStore.fetchRows(namedQuery)
+            pathPattern: '/sql/:fileName',
+            component: QueryResultsView,
+            getTitle: () => getText('app.sql.query.title'),
+            onMatch: (fileName) => queryResultsStore.fetchRows(fileName)
         },
         {
             pathPattern: '/logs',
-            component: NamedQueryListView,
+            component: FileNameListView,
             getTitle: () => getText('app.sql.list.title'),
-            onMatch: () => namedQueryListStore.fetchNamedQueries()
+            onMatch: () => fileNameListStore.fetchFileNameList()
         }
     ]
 }

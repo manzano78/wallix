@@ -7,6 +7,8 @@
 @menuBackgroundColor: #34495e;
 @menuWidthPx: 200;
 @menuWidth: @menuWidthPx*1px;
+@BannerHeightPx: 50;
+@BannerHeight: @BannerHeightPx*1px;
 @bordersColor: #aaa;
 @tooltipBackgroundColor: rgba(0, 0, 0, 0.7);
 
@@ -167,22 +169,15 @@ a:hover, a:focus {
 }
 
 #content {
+  padding: @BannerHeight+15px 15px 0 15px;
   margin-left: @menuWidth;
   position: relative;
   font-size: @fontSize !important;
   min-height: 570px;
 }
 
-#content.padding {
-  padding: 0 15px;
-}
-
 #content.left-margin {
   margin-left: 0;
-}
-
-#content.top-padding {
-  padding-top: 65px;
 }
 
 #banner {
@@ -197,7 +192,7 @@ a:hover, a:focus {
   top: 0;
   left: @menuWidth;
   right: 0;
-  height: 50px;
+  height: @BannerHeight;
 }
 
 #banner.left-margin {
@@ -276,4 +271,19 @@ a:hover, a:focus {
   border-left: none;
   border-right: none;
   border-top: none;
+}
+
+.page-title {
+  margin-bottom: 15px;
+  h4 {
+    margin: 0;
+    line-height: 21px;
+    font-size: 21px;
+    font-weight: 600;
+    font-style: normal;
+  }
+}
+
+.btn {
+  border-radius: 0 !important;
 }

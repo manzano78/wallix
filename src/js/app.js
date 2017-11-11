@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import {Provider} from 'mobx-react'
 import {useStrict} from 'mobx'
-import App from './app'
+import {App} from './app/App'
 import RootStore from './app/common/store/RootStore'
 import createBrowserHistory from 'history/createBrowserHistory'
 
