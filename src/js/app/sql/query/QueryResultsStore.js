@@ -4,6 +4,8 @@ import {generate} from 'shortid'
 
 export default class QueryResultsStore extends BaseStore {
 
+    static ROW_KEY = '$$rowKey';
+
     @observable queryResults;
 
     constructor(rootStore){
@@ -12,11 +14,22 @@ export default class QueryResultsStore extends BaseStore {
     }
 
     @computed get columns(){
-        return this.queryResults.length ? Object.keys(this.queryResults[0].row) : [];
+
+        if(!this.queryResults.length)
+            return [];
+
+        const columnKeys = Object
+            .keys(this.queryResults[0])
+            .filter(columnKey => columnKey !== QueryResultsStore.ROW_KEY);
+
+        return columnKeys.map(columnKey => ({columnKey, columnLabel: columnKey}));
     }
 
-    async fetchRows(fileName){
-        const rows = await this.rootStore.httpStore.getJSON(`/api/sql/query/${fileName}`);
-        runInAction(() => this.queryResults = rows.map(row => ({row, rowKey: generate()})));
+    async fetchQueryResults(fileName){
+        const queryResults = await this.rootStore.httpStore.getJSON(`/api/sql/query/${fileName}`);
+        runInAction(() => this.queryResults = queryResults.map(row => ({
+            ...row,
+            [QueryResultsStore.ROW_KEY]: generate()
+        })));
     }
 }

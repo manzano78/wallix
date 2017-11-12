@@ -1,0 +1,37 @@
+body{
+  font-size: @fontSize;
+  color: #73879c;
+}
+
+html * {
+  outline: 0 !important;
+  text-rendering: optimizeLegibility !important;
+  -webkit-font-smoothing: antialiased !important;
+}
+
+*:focus {
+  outline: none !important;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  box-shadow: none !important;
+}
+
+*:hover, *:active{
+  outline: none !important;
+}
+
+.nav>li>a:hover, .nav>li>a:focus {
+  text-decoration: none;
+}
+
+a:focus {
+  outline-offset: -2px;
+}
+
+a:hover, a:focus {
+  text-decoration: underline;
+}
+
+.table {
+  margin-bottom: 0;
+}

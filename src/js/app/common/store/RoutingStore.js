@@ -1,10 +1,10 @@
 import {computed, observable, reaction, runInAction, action} from 'mobx'
-import {createLocation, createPath, locationsAreEqual} from 'history'
+import {createLocation, createPath} from 'history'
 import Route from 'route-parser'
 import {isFunction} from 'is-check'
 import {getRoutesDefinition, onNoRouteFound} from '../routes'
 import BaseStore from './BaseStore'
-import getArgNames from 'fn-args'
+import functionArguments from 'function-arguments'
 
 export default class RoutingStore extends BaseStore {
 
@@ -146,12 +146,9 @@ export default class RoutingStore extends BaseStore {
         }
     }
 
-    createLocation(path, state, key) {
-        return createLocation(path, state, key, this.currentLocation);
-    }
-
-    currentLocationEquals(location){
-        return this.currentLocation && locationsAreEqual(location, this.currentLocation);
+    createHref(path){
+        const location = createLocation(path);
+        return this.history.createHref(location);
     }
 
     static _executeFunctions(functionsToExecute, match) {
@@ -161,7 +158,7 @@ export default class RoutingStore extends BaseStore {
 
         functionsToExecute.forEach(functionToExecute => {
 
-            const argNames = getArgNames(functionToExecute);
+            const argNames = functionArguments(functionToExecute);
             const args = argNames.map(argumentName => match[argumentName]);
             const result = functionToExecute.apply(undefined, args);
 

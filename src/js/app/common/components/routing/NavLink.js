@@ -2,7 +2,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Link from './Link'
-import {isString} from 'is-check'
 import {inject, observer} from 'mobx-react'
 import classNames from 'classnames'
 
@@ -13,10 +12,6 @@ export default class NavLink extends Component {
     static propTypes = {
         activeClassName: PropTypes.string.isRequired,
         activeStyle: PropTypes.object.isRequired,
-        to: PropTypes.oneOf([
-            PropTypes.object,
-            PropTypes.string
-        ]).isRequired,
         getIsActive: PropTypes.func
     };
 
@@ -39,13 +34,16 @@ export default class NavLink extends Component {
             ...linkProps
         } = this.props;
 
-        const location = isString(to) ? routingStore.createLocation(to) : to;
-        const isActive = getIsActive ? getIsActive() : routingStore.currentLocationEquals(location);
+        const match = !!(routingStore.currentRouteMatch && routingStore.currentRouteMatch.getMatch(to));
+
+        const isActive = getIsActive ? getIsActive() : match;
+
         const className = classNames(baseClassName, {[activeClassName]: isActive});
+
         const style = isActive ? {...baseStyle, ...activeStyle} : baseStyle;
 
         return (
-            <Link {...linkProps} to={location} className={className} style={style}/>
+            <Link {...linkProps} to={to} className={className} style={style}/>
         );
     }
 }

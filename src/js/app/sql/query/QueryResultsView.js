@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
 import React, {Component} from 'react'
 import {inject, observer} from 'mobx-react'
-import Aux from 'react-aux'
-import PageTitle from '../../common/components/typography/PageTitle';
+import TableView from '../../common/components/TableView'
 
 @inject(
     'queryResultsStore',
@@ -17,32 +16,14 @@ export default class QueryResultsView extends Component {
         const {fileName} = match;
 
         return (
-            <Aux>
-                <PageTitle>
-                    {translationStore.getText('app.sql.query.title')}
-                </PageTitle>
-                <p><em>{translationStore.getText('app.sql.query.filename.desc', fileName)}</em></p>
-                {queryResultsStore.queryResults.length === 0 ? translationStore.getText('app.sql.list.no_files_found') : (
-                    <table className="table table-bordered">
-                        <thead>
-                        <tr>
-                            {queryResultsStore.columns.map(column => (
-                                <th key={column}>{column}</th>
-                            ))}
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {queryResultsStore.queryResults.map(({row, rowKey}) => (
-                            <tr key={rowKey}>
-                                {queryResultsStore.columns.map(column => (
-                                    <td key={column}>{row[column]}</td>
-                                ))}
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
-                )}
-            </Aux>
+            <TableView
+                rowKey="$$rowKey"
+                rows={queryResultsStore.queryResults}
+                columns={queryResultsStore.columns}
+                pageTitle={translationStore.getText('app.sql.query.title')}
+                pageSubtitle={translationStore.getText('app.sql.query.filename.desc', fileName)}
+                formatRowCount={(rowCount) => translationStore.getText('app.sql.queries.count', rowCount)}
+            />
         )
     }
 }

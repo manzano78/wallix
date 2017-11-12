@@ -1,0 +1,168 @@
+/* ================ */
+/* MENU RETRACTABLE */
+/* ================ */
+#menuRetractable {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 200px;
+    z-index: 9994;
+    background: @fondMenuGauche;
+    overflow: hidden;
+}
+#menuRetractable>div {
+    padding-right: 30px;
+    width: 250px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: -30px;
+    overflow-y: auto;
+}
+.rubriques-gauche .hide-show-sous-menu ul{
+    list-style: none!important;
+}
+.contextual-menu{
+    background:#fff;
+    width: 200px;
+}
+.logo-client{
+    height: 51px;
+    border-bottom: 1px solid #ddd;
+    padding: 1px;
+    line-height: 48px;
+    text-align: center;
+}
+.logo-client img {
+    max-height: 48px;
+    display: inline-block;
+    line-height: 50px;
+    vertical-align: middle;
+}
+#navbar-client{
+     border-bottom: 1px solid #ddd;
+ }
+#navbar-site{
+    border-bottom: 1px solid #ddd;
+}
+#navbar-client button, #navbar-site button {
+    height: 31px;
+    width: 31px;
+    margin-left: -1px;
+    border-radius: 0;
+    border: 1px solid #ddd;
+    border-right: 0;
+    border-bottom: 0;
+    border-top: 0;
+    border-right: 1px solid #ddd;
+}
+
+#navMenuRetractable{
+    width: 200px;
+}
+.rubriques-gauche {
+    position: relative;
+    min-height: 50px;
+    color: white;
+    line-height: 50px;
+    text-align: center;
+}
+.rubriques-gauche::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 7px;
+    display: block;
+    z-index: -1;
+    -webkit-transition: all 0.25s ease;
+    -moz-transition: all 0.25s ease;
+    -ms-transition: all 0.25s ease;
+    -o-transition: all 0.25s ease;
+    transition: all 0.25s ease;
+}
+.rubriques-gauche:hover::after, .rubriques-gauche.active::after{
+    width: 100%;
+}
+.rubriques-gauche .panel-title {
+     display: block;
+     height: 50px;
+     padding-left: 44px;
+}
+#sql-file-list::after {
+    background:@orange;
+}
+#sql-file-list>a {
+  background: url(../img/sprite-menu.png) no-repeat;
+  background-position: left -97px;
+}
+
+#sql-file-list a.active {
+  background-color: @orange;
+}
+
+#logs-list::after {
+  background: @bleuClair;
+}
+#logs-list>a {
+  background: url(../img/sprite-menu.png) no-repeat;
+  background-position: left -248px;
+}
+#logs-list a.active {
+  background-color: @bleuClair;
+}
+
+#navMenuRetractable a, #navMenuRetractable a .span-a-cacher {
+    text-decoration: none;
+    color: white;
+}
+#navMenuRetractable a{
+    opacity:0.8;
+}
+#navMenuRetractable a:hover, #navMenuRetractable .rubriques-gauche.active>a, #navMenuRetractable .rubriques-gauche:hover>a,  #navMenuRetractable a.active{
+    opacity:1;
+}
+.hide-show-sous-menu a.active{
+    opacity:1;
+    font-weight: bold;
+    letter-spacing: 0;
+}
+#navMenuRetractable a .span-a-cacher {
+    text-decoration: none;
+    color: #fff;
+}
+#navMenuRetractable a:hover {
+    color: #fff;
+}
+.rubriques-gauche .span-a-cacher {
+    display: block;
+    font-size: 16px;
+    text-align: left;
+    line-height: 50px;
+    font-weight: 500;
+}
+.rubriques-gauche .hide-show-sous-menu {
+    position: relative;
+    left: 0;
+    width: 100%;
+    display: none;
+    text-align: left;
+}
+.rubriques-gauche.active .hide-show-sous-menu {
+    display: block;
+    padding-left: 40px;
+    padding-bottom: 5px;
+}
+.rubriques-gauche .hide-show-sous-menu a {
+    color: #fff;
+    display: block;
+    line-height: 18px;
+    padding: 5px;
+}
+.rubriques-gauche .hide-show-sous-menu div.active a {
+    font-weight: bold;
+    opacity: 1;
+}

@@ -9,11 +9,8 @@ GENDER VARCHAR NOT NULL,
 AGE INTEGER NOT NULL
 );
 
-CREATE TABLE IF NOT EXISTS ADDRESS (
-ADDRESS_ID INTEGER PRIMARY KEY NOT NULL,
-LABEL VARCHAR NOT NULL
-);
-
 INSERT INTO USER(USER_ID, FIRST_NAME, LAST_NAME, EMAIL, GENDER, AGE) VALUES (1, 'Mikaël', 'Anzano', 'mikael.anzano@gmail.com', 'Mr', 29);
 INSERT INTO USER(USER_ID, FIRST_NAME, LAST_NAME, EMAIL, GENDER, AGE) VALUES (2, 'Franck', 'Underwood', 'franck.underwood@fake.com', 'Mr', 58);
-INSERT INTO USER(USER_ID, FIRST_NAME, LAST_NAME, EMAIL, GENDER, AGE) VALUES (3, 'Walter', 'White', 'walter.white@fake.com', 'Mr', 60);
+INSERT INTO USER(USER_ID, FIRST_NAME, LAST_NAME, EMAIL, GENDER, AGE) VALUES (3, 'Claire', 'Underwood', 'claire.underwood@fake.com', 'Mrs', 55);
+INSERT INTO USER(USER_ID, FIRST_NAME, LAST_NAME, EMAIL, GENDER, AGE) VALUES (4, 'Walter', 'White', 'walter.white@fake.com', 'Mr', 60);
+INSERT INTO USER(USER_ID, FIRST_NAME, LAST_NAME, EMAIL, GENDER, AGE) VALUES (5, 'Skyler', 'White', 'skyler.white@fake.com', 'Mrs', 25);

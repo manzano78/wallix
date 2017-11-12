@@ -2,7 +2,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {Button} from 'react-bootstrap'
-import {isString} from 'is-check'
 import {inject, observer} from 'mobx-react'
 
 @inject('routingStore')
@@ -10,10 +9,7 @@ import {inject, observer} from 'mobx-react'
 export default class Link extends Component {
 
     static propTypes = {
-        to: PropTypes.oneOfType([
-            PropTypes.object,
-            PropTypes.string
-        ]).isRequired,
+        to: PropTypes.string.isRequired,
         replace: PropTypes.bool
     };
 
@@ -25,17 +21,16 @@ export default class Link extends Component {
 
         const {routingStore, to, ...linkProps} = this.props;
 
-        const location = isString(to) ? routingStore.createLocation(to) : to;
-        const href = routingStore.history.createHref(location);
+        const href = routingStore.createHref(to);
 
         return (
-            <Button {...linkProps} href={href} onClick={e => this.handleClick(e, location)}/>
+            <Button {...linkProps} href={href} onClick={e => this.handleClick(e)}/>
         );
     }
 
-    handleClick(e, location){
+    handleClick(e){
 
-        const {routingStore, replace, target, onClick} = this.props;
+        const {routingStore, to, replace, target, onClick} = this.props;
 
         if (onClick)
             onClick(e);
@@ -45,9 +40,9 @@ export default class Link extends Component {
             e.preventDefault();
 
             if(replace){
-                routingStore.history.replace(location);
+                routingStore.history.replace(to);
             } else {
-                routingStore.history.push(location);
+                routingStore.history.push(to);
             }
         }
     }

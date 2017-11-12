@@ -63,29 +63,11 @@ module.exports = function (env) {
                 {
                     test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
                     loader: 'file-loader?name=img/[name].[ext]'
-                }
-                // ,
-                // {
-                //     test:  /\.(png|jpe?g|gif)$/,
-                //     loader: 'url-loader?limit=25000&path=[md5:hash:base64:7]'
-                // }
-                ,
+                },
                 {
                     test: /\.(png|jpe?g|gif)$/,
                     loader: 'file-loader?name=img/[name].[ext]'
                 }
-                // ,
-                // {
-                //     test: /\.jsx?$/,
-                //     loader: 'eslint-loader',
-                //     exclude: /node_modules/,
-                //     enforce: "pre",
-                //     options: {
-                //         emitError: true,
-                //         emitWarning: true,
-                //         failOnError: true
-                //     }
-                // }
             ]
         }
     }

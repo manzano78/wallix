@@ -4,6 +4,7 @@ import RoutingStore from './RoutingStore'
 import TranslationStore from './TranslationStore'
 import QueryResultsStore from '../../sql/query/QueryResultsStore'
 import FileNameListStore from '../../sql/list/FileNameListStore'
+import LogsListStore from '../../log/LogsListStore'
 
 export default class RootStore {
 
@@ -14,5 +15,6 @@ export default class RootStore {
         this.routingStore = new RoutingStore(this, history);
         this.fileNameListStore = new FileNameListStore(this);
         this.queryResultsStore = new QueryResultsStore(this);
+        this.logsListStore = new LogsListStore(this);
     }
 }

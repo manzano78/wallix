@@ -4,3 +4,4 @@ npm-debug.log
 database.db
 public
 node_modules
+logs/*
