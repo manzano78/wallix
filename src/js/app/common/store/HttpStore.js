@@ -1,6 +1,5 @@
 import {observable, runInAction, computed} from 'mobx'
 import BaseStore from './BaseStore'
-import fetch from 'isomorphic-fetch'
 import {stringify} from 'query-string'
 
 export default class HttpStore extends BaseStore {

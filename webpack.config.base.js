@@ -9,7 +9,7 @@ module.exports = function (env) {
 
     return {
         context: path.resolve(__dirname, './src'),
-        entry: ['babel-polyfill', './js/app', './css/index.less'],
+        entry: ['babel-polyfill', 'raf/polyfill', 'isomorphic-fetch', './js/app', './css/index.less'],
         output: {
             filename: 'js/app.bundle.js',
             path: path.resolve(__dirname, './public'),
