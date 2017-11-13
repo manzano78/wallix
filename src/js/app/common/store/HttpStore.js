@@ -1,4 +1,4 @@
-import {observable, runInAction, computed} from 'mobx'
+import {observable, runInAction, computed, action} from 'mobx'
 import BaseStore from './BaseStore'
 import {stringify} from 'query-string'
 
@@ -16,20 +16,33 @@ export default class HttpStore extends BaseStore {
     constructor(rootStore){
         super(rootStore);
         this.pendingRequestCount = 0;
+        this._handleResponseError = this._handleResponseError.bind(this);
     }
 
     @computed get isSynchronizing(){
         return this.pendingRequestCount !== 0;
     }
 
-    async getJSON(url, params){
+    @action async getJSON(url, params){
 
         this.pendingRequestCount++;
 
-        const finalUrl = params ? `${url}?${stringify(params)}` : url;
+        const finalUrl = params ? `${url}?${stringify(params)}` : url + 't';
 
-        return await fetch(finalUrl, HttpStore.FETCH_CONFIG)
-            .then(response => response.json())
-            .finally(() => runInAction(() => this.pendingRequestCount--));
+        const response = await fetch(finalUrl, HttpStore.FETCH_CONFIG).catch(this._handleResponseError);
+        const responseBody = await response.json().catch(this._handleResponseError);
+
+        this._decrementRequestCount();
+
+        return responseBody;
+    }
+
+    _handleResponseError(error){
+        this._decrementRequestCount();
+        throw error;
+    }
+
+    @action _decrementRequestCount(){
+        this.pendingRequestCount--;
     }
 }

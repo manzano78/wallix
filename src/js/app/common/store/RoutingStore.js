@@ -108,7 +108,10 @@ export default class RoutingStore extends BaseStore {
             let hasErrors = false;
             const originalView = this.currentView;
 
-            await Promise.all(results).catch(() => hasErrors = true);
+            await Promise.all(results).catch((error) => {
+                console.error(error);
+                hasErrors = true
+            });
 
             runInAction(() => originalView.status = hasErrors ? RoutingStore.IS_IN_ERROR : RoutingStore.IS_INITIALIZED);
 
