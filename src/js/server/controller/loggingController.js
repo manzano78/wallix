@@ -7,7 +7,9 @@ exports.loadLogsList = (req, res) => {
 
     fs.readdir(logsDirectory, (err, fileNames) => {
 
-        const logFileNames = fileNames.filter(fileName => fileName !== '.gitignore');
+        const logFileNames = fileNames
+            ? fileNames.filter(fileName => fileName.startsWith('log-'))
+            : [];
 
         if(logFileNames.length){
 
