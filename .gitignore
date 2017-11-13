@@ -1,5 +1,5 @@
 .idea
-wallix.iml
+*.iml
 npm-debug.log
 database.db
 public
