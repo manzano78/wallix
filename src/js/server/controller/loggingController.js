@@ -7,18 +7,25 @@ exports.loadLogsList = (req, res) => {
 
     fs.readdir(logsDirectory, (err, fileNames) => {
 
-        const logger = new (winston.Logger)({
-            transports: fileNames.map(fileName => new (winston.transports.File)({filename: `${logsDirectory}/${fileName}`, name: fileName}))
-        });
+        if(!fileNames){
 
-        logger.query({}, (err, logsPerFileName) => {
+            res.json([]);
 
-            const logs = mergeLogs(logsPerFileName, fileNames);
+        } else {
 
-            orderLogsByDateDesc(logs);
+            const logger = new (winston.Logger)({
+                transports: fileNames.map(fileName => new (winston.transports.File)({filename: `${logsDirectory}/${fileName}`, name: fileName}))
+            });
 
-            res.json(logs);
-        });
+            logger.query({}, (err, logsPerFileName) => {
+
+                const logs = mergeLogs(logsPerFileName, fileNames);
+
+                orderLogsByDateDesc(logs);
+
+                res.json(logs);
+            });
+        }
     });
 };
 
