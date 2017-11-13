@@ -49,18 +49,7 @@ export default class RoutingStore extends BaseStore {
 
         if (!this.routerIsStarted) {
 
-            const routesDefinition = getRoutesDefinition(this.rootStore);
-
-            this.routes = routesDefinition.map(routeDefinition => {
-
-                const {pathPattern} = routeDefinition;
-                const route = new Route(pathPattern);
-
-                return {
-                    ...routeDefinition,
-                    getMatch: (path) => route.match(path)
-                };
-            });
+            this._initializeRoutes();
 
             this.currentLocation = this.history.location;
 
@@ -119,10 +108,7 @@ export default class RoutingStore extends BaseStore {
             let hasErrors = false;
             const originalView = this.currentView;
 
-            await Promise.all(results).catch((error) => {
-                console.error(error);
-                hasErrors = true;
-            });
+            await Promise.all(results).catch(() => hasErrors = true);
 
             runInAction(() => originalView.status = hasErrors ? RoutingStore.IS_IN_ERROR : RoutingStore.IS_INITIALIZED);
 
@@ -149,6 +135,22 @@ export default class RoutingStore extends BaseStore {
     createHref(path){
         const location = createLocation(path);
         return this.history.createHref(location);
+    }
+
+    _initializeRoutes(){
+
+        const routesDefinition = getRoutesDefinition(this.rootStore);
+
+        this.routes = routesDefinition.map(routeDefinition => {
+
+            const {pathPattern} = routeDefinition;
+            const route = new Route(pathPattern);
+
+            return {
+                ...routeDefinition,
+                getMatch: (path) => route.match(path)
+            };
+        });
     }
 
     static _executeFunctions(functionsToExecute, match) {

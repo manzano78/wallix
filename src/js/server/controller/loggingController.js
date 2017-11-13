@@ -13,21 +13,8 @@ exports.loadLogsList = (req, res) => {
 
         if(logFileNames.length){
 
-            const logger = new (winston.Logger)({
-                transports: logFileNames.map(fileName => new (winston.transports.File)({
-                    filename: `${logsDirectory}/${fileName}`,
-                    name: fileName
-                }))
-            });
+            queryLogs(logFileNames, (logs) => res.json(logs));
 
-            logger.query({}, (err, logsPerFileName) => {
-
-                const logs = mergeLogs(logsPerFileName, logFileNames);
-
-                orderLogsByDateDesc(logs);
-
-                res.json(logs);
-            });
         } else {
 
             res.json([]);
@@ -35,12 +22,31 @@ exports.loadLogsList = (req, res) => {
     });
 };
 
-const mergeLogs = (logsPerFileName, fileNames) => {
+const queryLogs = (logFileNames, callback) => {
+
+    const logger = new (winston.Logger)({
+        transports: logFileNames.map(fileName => new (winston.transports.File)({
+            filename: `${logsDirectory}/${fileName}`,
+            name: fileName
+        }))
+    });
+
+    logger.query({}, (err, logsPerFileName) => {
+
+        const logs = mergeLogs(logsPerFileName, logFileNames);
+
+        orderLogsByDateDesc(logs);
+
+        callback(logs);
+    });
+};
+
+const mergeLogs = (logsPerLogFileName, logFileNames) => {
 
     let logs = [];
 
-    fileNames.forEach(filename => {
-        const fileNameLogs = logsPerFileName[filename];
+    logFileNames.forEach(filename => {
+        const fileNameLogs = logsPerLogFileName[filename];
         logs = logs.concat(fileNameLogs);
     });
 

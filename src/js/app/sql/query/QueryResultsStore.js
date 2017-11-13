@@ -26,7 +26,9 @@ export default class QueryResultsStore extends BaseStore {
     }
 
     async fetchQueryResults(fileName){
+
         const queryResults = await this.rootStore.httpStore.getJSON(`/api/sql/query/${fileName}`);
+
         runInAction(() => this.queryResults = queryResults.map(row => ({
             ...row,
             [QueryResultsStore.ROW_KEY]: generate()

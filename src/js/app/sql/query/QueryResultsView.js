@@ -2,6 +2,7 @@
 import React, {Component} from 'react'
 import {inject, observer} from 'mobx-react'
 import TableView from '../../common/components/TableView'
+import QueryResultsStore from './QueryResultsStore'
 
 @inject(
     'queryResultsStore',
@@ -17,7 +18,7 @@ export default class QueryResultsView extends Component {
 
         return (
             <TableView
-                rowKey="$$rowKey"
+                rowKey={QueryResultsStore.ROW_KEY}
                 rows={queryResultsStore.queryResults}
                 columns={queryResultsStore.columns}
                 pageTitle={translationStore.getText('app.sql.query.title')}

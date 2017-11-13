@@ -39,7 +39,7 @@ exports.getSqlQueryResults = (req, res) => {
 
                     if(err){
 
-                        console.error(err);
+                        winston.error(err.message);
                         res.status(500).send('Could not execute SQL query');
 
                     } else {
