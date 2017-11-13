@@ -33,23 +33,28 @@ exports.getSqlQueryResults = (req, res) => {
 
         } else {
 
-            fs.readFile(filePath, 'utf-8', (err, selectStatement) => {
+            fs.readFile(filePath, 'utf-8', (err, sqlSelectQuery) => {
 
-                database.instance.all(selectStatement, [], (err, rows) => {
-
-                    if(err){
-
-                        winston.error(err.message);
-                        res.status(500).send('Could not execute SQL query');
-
-                    } else {
-
-                        winston.info(`Executed SQL query : ${selectStatement}`);
-
-                        res.json(rows);
-                    }
-                });
+                executeSelectQueryAndReturnResults(sqlSelectQuery, res);
             });
+        }
+    });
+};
+
+const executeSelectQueryAndReturnResults = (sqlSelectQuery, res) => {
+
+    database.instance.all(sqlSelectQuery, [], (err, results) => {
+
+        if(err){
+
+            winston.error(err.message);
+            res.status(500).send('Could not execute SQL query');
+
+        } else {
+
+            winston.info(`Executed SQL query : ${sqlSelectQuery}`);
+
+            res.json(results);
         }
     });
 };
