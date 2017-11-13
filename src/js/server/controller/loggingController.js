@@ -7,24 +7,28 @@ exports.loadLogsList = (req, res) => {
 
     fs.readdir(logsDirectory, (err, fileNames) => {
 
-        if(!fileNames){
+        const logFileNames = fileNames.filter(fileName => fileName !== '.gitignore');
 
-            res.json([]);
-
-        } else {
+        if(logFileNames.length){
 
             const logger = new (winston.Logger)({
-                transports: fileNames.map(fileName => new (winston.transports.File)({filename: `${logsDirectory}/${fileName}`, name: fileName}))
+                transports: logFileNames.map(fileName => new (winston.transports.File)({
+                    filename: `${logsDirectory}/${fileName}`,
+                    name: fileName
+                }))
             });
 
             logger.query({}, (err, logsPerFileName) => {
 
-                const logs = mergeLogs(logsPerFileName, fileNames);
+                const logs = mergeLogs(logsPerFileName, logFileNames);
 
                 orderLogsByDateDesc(logs);
 
                 res.json(logs);
             });
+        } else {
+
+            res.json([]);
         }
     });
 };
