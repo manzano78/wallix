@@ -6,12 +6,16 @@ exports.loadSqlFilenameList = (req, res) => {
 
     fs.readdir('./assets/sql', (err, fileNames) => {
 
-        const fileNamesWithoutExtension = fileNames.map(fileName => {
-            const lastDotIndex = fileName.lastIndexOf('.');
-            return fileName.substring(0, lastDotIndex);
+        const sqlFileNames = fileNames
+            ? fileNames.filter(fileName => fileName.endsWith('.sql'))
+            : [];
+
+        const sqlFileNamesWithoutExtension = sqlFileNames.map(sqlFileName => {
+            const lastDotIndex = sqlFileName.lastIndexOf('.');
+            return sqlFileName.substring(0, lastDotIndex);
         });
 
-        res.json(fileNamesWithoutExtension);
+        res.json(sqlFileNamesWithoutExtension);
     });
 };
 
