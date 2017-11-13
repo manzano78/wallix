@@ -27,7 +27,7 @@ export default class HttpStore extends BaseStore {
 
         this.pendingRequestCount++;
 
-        const finalUrl = params ? `${url}?${stringify(params)}` : url + 't';
+        const finalUrl = params ? `${url}?${stringify(params)}` : url;
 
         const response = await fetch(finalUrl, HttpStore.FETCH_CONFIG).catch(this._handleResponseError);
         const responseBody = await response.json().catch(this._handleResponseError);
