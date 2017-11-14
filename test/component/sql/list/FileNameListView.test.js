@@ -63,14 +63,12 @@ describe('SQL file names list View US', () => {
                 <FileNameListView/>
             </Provider>
         );
-        expect(fileNameListView.find('table thead tr th').length).toEqual(2);
-        expect(fileNameListView.find('table thead tr th').at(0).text()).toEqual('Nom du fichier SQL');
-        expect(fileNameListView.find('table thead tr th').at(1).text()).toEqual('Exécuter');
 
-        expect(fileNameListView.find('table tbody tr').length).toEqual(2);
-        expect(fileNameListView.find('table tbody tr').at(0).find('td').at(0).text()).toEqual('query-1');
-        expect(fileNameListView.find('table tbody tr').at(1).find('td').at(0).text()).toEqual('query-2');
-        expect(fileNameListView.find('table tbody tr').at(0).find('td').at(1).find('a').is('[href="/sql/query-1"]')).toEqual(true);
-        expect(fileNameListView.find('table tbody tr').at(1).find('td').at(1).find('a').is('[href="/sql/query-2"]')).toEqual(true);
+        expect(fileNameListView.find('ul li').length).toEqual(2);
+        expect(fileNameListView.find('ul li a').at(0).text()).toEqual('query-1');
+        expect(fileNameListView.find('ul li a').at(1).text()).toEqual('query-2');
+        expect(fileNameListView.find('ul li a').at(0).is('[href="/sql/query-1"]')).toEqual(true);
+        expect(fileNameListView.find('ul li a').at(1).is('[href="/sql/query-2"]')).toEqual(true);
+
     });
 });

@@ -1,10 +1,8 @@
 import BaseStore from '../common/store/BaseStore'
-import {observable, runInAction, computed} from 'mobx'
+import {computed} from 'mobx'
 import dateformat from 'dateformat'
 
 export default class FileNameListStore extends BaseStore {
-
-    @observable logsList;
 
     constructor(rootStore){
         super(rootStore);
@@ -33,11 +31,13 @@ export default class FileNameListStore extends BaseStore {
 
         const logsList = await this.rootStore.httpStore.getJSON('/api/logs/list');
 
-        runInAction(() => this.logsList = logsList.map(log => {
+        this.logsList = logsList.map(log => {
+
             const {timestamp} = log;
             const date = new Date(timestamp);
             const formattedDate = dateformat(date, 'dd/mm/yyyy - HH:MM:ss');
+
             return {...log, formattedDate};
-        }));
+        });
     }
 }

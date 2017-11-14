@@ -2,7 +2,9 @@
 import React, {Component} from 'react'
 import {inject, observer} from 'mobx-react'
 import Link from '../../common/components/routing/Link'
-import TableView from '../../common/components/TableView'
+import Aux from 'react-aux'
+import PageTitle from '../../common/components/typography/PageTitle'
+import BackButton from '../../common/components/routing/BackButton'
 
 @inject(
     'fileNameListStore',
@@ -15,23 +17,23 @@ export default class FileNameListView extends Component {
 
         const {fileNameListStore, translationStore} = this.props;
 
-        const rows = fileNameListStore.fileNameList.map(fileName => ({
-            fileName,
-            execution: (
-                <Link bsSize="xs" bsStyle="primary" to={`/sql/${fileName}`}>
-                    <i className="fa fa-database"/>
-                </Link>
-            )
-        }));
-
         return (
-            <TableView
-                rowKey="fileName"
-                rows={rows}
-                columns={fileNameListStore.columns}
-                pageTitle={translationStore.getText('app.sql.list.title')}
-                formatRowCount={(rowCount) => translationStore.getText('app.sql.list.count', rowCount)}
-            />
+            <Aux>
+                <PageTitle>
+                    {translationStore.getText('app.sql.list.title')}
+                </PageTitle>
+                <ul>
+                    {fileNameListStore.fileNameList.map(fileName => (
+                        <li key={fileName} className="list-unstyled">
+                            <span>
+                                <i className="fa fa-database"/>
+                                <Link to={`/sql/${fileName}`}>{fileName}</Link>
+                            </span>
+                        </li>
+                    ))}
+                </ul>
+                <BackButton/>
+            </Aux>
         )
     }
 }

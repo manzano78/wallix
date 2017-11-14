@@ -35,19 +35,6 @@ describe('SQL File name list Store US', () => {
 
         await fileNameListStore.fetchFileNameList();
 
-        const fileNameList = toJS(fileNameListStore.fileNameList);
-
-        expect(fileNameList).toEqual(fileNameListReceivedFromServer);
-
-        expect(fileNameListStore.columns).toEqual([
-            {
-                columnKey: 'fileName',
-                columnLabel: 'Nom du fichier SQL'
-            },
-            {
-                columnKey: 'execution',
-                columnLabel: 'Exécuter'
-            }
-        ]);
+        expect(fileNameListStore.fileNameList).toEqual(fileNameListReceivedFromServer);
     });
 });
