@@ -22,16 +22,20 @@ export default class FileNameListView extends Component {
                 <PageTitle>
                     {translationStore.getText('app.sql.list.title')}
                 </PageTitle>
-                <ul>
-                    {fileNameListStore.fileNameList.map(fileName => (
-                        <li key={fileName} className="list-unstyled">
+                <div className="panel panel-default">
+                    <div className="panel-body">
+                        <ul>
+                            {fileNameListStore.fileNameList.map(fileName => (
+                                <li key={fileName} className="list-unstyled">
                             <span>
                                 <i className="fa fa-database"/>
                                 <Link to={`/sql/${fileName}`}>{fileName}</Link>
                             </span>
-                        </li>
-                    ))}
-                </ul>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
                 <BackButton/>
             </Aux>
         )
